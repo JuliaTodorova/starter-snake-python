@@ -1,7 +1,9 @@
 import json
 import os
-import random
 import bottle
+import Board
+import FoodLocator
+import Snake
 
 from api import ping_response, start_response, move_response, end_response
 
@@ -24,7 +26,6 @@ def ping():
 @bottle.post('/start')
 def start():
     data = bottle.request.json
-    game_id = data['game']['id']
 
     print(json.dumps(data))
 
@@ -38,14 +39,28 @@ def start():
 @bottle.post('/move')
 def move():
     data = bottle.request.json
-    turn = data['turn']
+
+    board = Board.Board(
+        data['board']['height'],
+        data['board']['width']
+    )
+    snake = Snake.Snake(
+        data['you']['id'],
+        data['you']['name'],
+        data['you']['health'],
+        data['body']['x'],
+        data['body']['y']
+    )
+
+    food_locator = FoodLocator.FoodLocator(
+        data['board']['food']['x'],
+        data['board']['food']['y']
+    )
 
     print(json.dumps(data))
 
-    directions = ['up', 'down', 'left', 'right']
-    direction = random.choice(directions)
+    return next_move(board, snake)
 
-    return move_response(direction)
 
 @bottle.post('/end')
 def end():
@@ -59,30 +74,19 @@ def end():
 application = bottle.default_app()
 
 
-def game():
-    data = bottle.request.json
+def invalid_move(board, snake):
+    invalid_moves = [board.height, board.width, snake.snake_body_tail]
+    return invalid_moves
 
 
-def board():
-    data = bottle.request.json
-    height = data['board']['height']
-    width = data['board']['width']
+def next_move(board, snake):
 
+    if snake.snake_body_head not in invalid_move(board, snake):
+        go = 'left'
+    else:
+        go = 'right'
 
-def snake():
-    data = bottle.request.json
-    snake_id = data['you']['id']
-    snake_name = data['you']['name']
-    snake_health = data['you']['health']
-    snake_body_x = data['body']['x']
-    snake_body_y = data['body']['y']
-
-
-def food_location():
-    data = bottle.request.json
-    x = data['board']['food']['x']
-    y = data['board']['food']['y']
-
+    return go
 
 if __name__ == '__main__':
     bottle.run(
