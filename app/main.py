@@ -2,7 +2,6 @@ import json
 import os
 import bottle
 import Board
-import FoodLocator
 import Snake
 
 from api import ping_response, start_response, move_response, end_response
@@ -52,14 +51,9 @@ def move():
         data['body']['y']
     )
 
-    food_locator = FoodLocator.FoodLocator(
-        data['board']['food']['x'],
-        data['board']['food']['y']
-    )
-
     print(json.dumps(data))
 
-    return next_move(board, snake)
+    return 'left'
 
 
 @bottle.post('/end')
@@ -72,21 +66,6 @@ def end():
 
 
 application = bottle.default_app()
-
-
-def invalid_move(board, snake):
-    invalid_moves = [board.height, board.width, snake.snake_body_tail]
-    return invalid_moves
-
-
-def next_move(board, snake):
-
-    if snake.snake_body_head not in invalid_move(board, snake):
-        go = 'left'
-    else:
-        go = 'right'
-
-    return go
 
 if __name__ == '__main__':
     bottle.run(
