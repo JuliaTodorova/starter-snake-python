@@ -1,25 +1,6 @@
 import numpy
+import random
 
-# mxn matrix
-# [1][1] [1][2] [1][3]
-# [2][1] [2][2] [2][3]
-# [3][1] [3][2] [3][3]
-def possible_moves():
-    move = {
-        'up': [-1][0],
-        'down': [1][0],
-        'left': [0][-1],
-        'right': [0][1]
-    }
-    return move
-
-
-def invalid_move(you):
-    invalid_moves = []
-    for each_direction in possible_moves():
-        if numpy.subtract(you, each_direction) < 1:
-            invalid_moves.append(each_direction)
-    return invalid_moves
 
 class Movement:
 
@@ -29,19 +10,44 @@ class Movement:
         self.up = up
         self.down = down
 
-    # up = [-1][0]
-    # down = [1][0]
-    # left = [0][-1]
-    # right = [0][1]
+    def possible_moves(self):
+        moves = {
+            'up': [-1][0],
+            'down': [1][0],
+            'left': [0][-1],
+            'right': [0][1]
+        }
+        return moves
 
     # if your head + 1/ -1 = [1..m][1..n] ^ [n..m][m..n] you gonna die
     # other invalid moves, yourself, other snakes
 
-    # def next_move(self):
-    #     snake_location = snake.snake_location(snake.snake_body_x, snake.snake_body_y)
-    #     if snake_location not in invalid_move(board):
-    #         go = 'left'
-    #     else:
-    #         go = 'right'
-    #
-    #     return go
+    def invalid_moves(self, you, width):
+        invalid_moves = []
+        for each_direction in you.possible_moves():
+            if numpy.subtract(you, each_direction) < 1 or \
+                    numpy.add(you, each_direction) > width:
+                invalid_moves.append(each_direction)
+        return invalid_moves
+
+    # add moves.value() to your head
+    # then check if your next value is equal in one of the
+    # invalid moves
+
+    def calculate_possible_moves(self, moves, head):
+        calculate_all = []
+        for each_move in moves:
+            calculate_all.append(
+                numpy.add(each_move, head)
+            )
+        return calculate_all
+
+    def calculate_valid_moves(self):
+        valid_moves = []
+        for each_move in self.calculate_possible_moves():
+            if each_move not in self.invalid_moves():
+                valid_moves.append(each_move)
+        return valid_moves
+
+    def next_move(self):
+        return random.choice(self.calculate_valid_moves())

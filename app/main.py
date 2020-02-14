@@ -3,6 +3,7 @@ import os
 import bottle
 import Board
 import Snake
+import Movement
 
 from api import ping_response, start_response, move_response, end_response
 
@@ -47,13 +48,30 @@ def move():
         data['you']['id'],
         data['you']['name'],
         data['you']['health'],
-        data['body']['x'],
-        data['body']['y']
+        data['body']['you']['x'],
+        data['body']['x']['y']
     )
 
+    movement = Movement.Movement(
+        'left',
+        'right',
+        'up',
+        'down'
+    )
+
+    invalid_move = movement.invalid_moves(
+        snake.head_coordinates(),
+        board.width
+    )
+
+    get_valid_moves = movement.calculate_valid_moves()
+
+    print(invalid_move)
+    print(get_valid_moves)
+    print("---------------------------")
     print(json.dumps(data))
 
-    return 'left'
+    return movement.next_move()
 
 
 @bottle.post('/end')

@@ -1,3 +1,6 @@
+import numpy
+
+
 class Snake:
 
     def __init__(self, snake_id, snake_name, snake_health, snake_body_x, snake_body_y):
