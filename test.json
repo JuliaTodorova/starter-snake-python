@@ -1,0 +1,43 @@
+{
+  "turn": 9,
+  "game": {
+    "id": "af823c5c-d784-4ed6-9e0a-a25482a9106c"
+  },
+  "board": {
+    "food": [
+      {
+        "y": 10,
+        "x": 0
+      }
+    ],
+    "width": 11,
+    "snakes": [
+      {
+        "body": [
+          {
+            "y": 0,
+            "x": 1
+          },
+          {
+            "y": 1,
+            "x": 1
+          },
+          {
+            "y": 2,
+            "x": 1
+          }
+        ],
+        "health": 91,
+        "id": "gs_yMrmxMTRqgKYQ9CJBvCRJ7Sc",
+        "name": "juliatodorova / Benevity-snake"
+      }
+    ],
+    "height": 11
+  },
+  "y    \"body\": [\n      {\n        \"y\": 0,\n        \"x\": 1\n      },\n      {\n        \"y\": 1,\n        \"x\": 1\n      },\n      {\n        \"y\": 2,\n        \"x\": 1\n      }\n    ],ou": {
+
+    "health": 91,
+    "id": "gs_yMrmxMTRqgKYQ9CJBvCRJ7Sc",
+    "name": "juliatodorova / Benevity-snake"
+  }
+}
